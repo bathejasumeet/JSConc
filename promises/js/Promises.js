@@ -103,3 +103,52 @@ myTimeoutPromise4.then(function(msg){
     console.log("caught an error, the error is " + err);
 });
 
+/*sample promises with all*/
+var myTimeoutPromise7=new Promise(function(resolve,reject){
+    window.setTimeout(function(){
+        var res=true;
+        res?resolve("myTimeoutPromise7 has been resolved"):reject("myTimeoutPromise7 has been rejected");
+    },5000);
+    console.log("inside the executor of p7");
+});
+
+var myTimeoutPromise8=new Promise(function(resolve,reject){
+    window.setTimeout(function(){
+        var res=true;
+        res?resolve("myTimeoutPromise8 has been resolved"):reject("myTimeoutPromise8 has been rejected");
+    },4000);
+    console.log("inside the executor of p8");
+});
+
+var myTimeoutPromise9=new Promise(function(resolve,reject){
+    window.setTimeout(function(){
+        var res=true;
+        res?resolve("myTimeoutPromise9 has been resolved"):reject("myTimeoutPromise9 has been rejected");
+    },3000);
+    console.log("inside the executor of p9");
+});
+
+
+var myTimeoutPromise10=new Promise(function(resolve,reject){
+    window.setTimeout(function(){
+        /*just to decrease the probability of failure*/
+        var res=Boolean(Math.floor((Math.random()*2)));
+        res?resolve("myTimeoutPromise10 has been resolved"):reject("myTimeoutPromise10 has been rejected");
+    },3000);
+    console.log("inside the executor of p10");
+});
+
+myTimeoutPromise7.then(function(msg){
+    /*this will be called always, return is important*/
+    return Promise.all([myTimeoutPromise8,myTimeoutPromise9,myTimeoutPromise10]);
+},function(msg){
+    /*this is probably never gonna be called */
+}).then(function(msg){
+    console.log("interesting message is array "+ typeof(msg)+" : " + msg);
+    console.log("promise 10 resolved!! hence all resolved!!");
+},function(msg){
+    console.log("interesting message is first promise that rejected caused this. Hence msg is of first promise, you ain't getting an array mate! "+ typeof(msg)+" : " + msg);
+    console.log("promise 10 borked!! hence all borked!!");
+}).catch(function(err){
+  console.log("error is " + err);
+});
