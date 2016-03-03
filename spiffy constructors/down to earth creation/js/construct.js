@@ -69,3 +69,15 @@ console.log(aChild.name +"'s parent is " + aChild.parentName);
 console.log(anotherChild.name + "'s parent is " + anotherChild.parentName);
 
 
+
+/*pattern to enforce new, if you forget new, this refers to global object*/
+function ForgetNew(){
+    if(!(this instanceof  arguments.callee)){
+        return new ForgetNew();
+    }
+    this.message = " it's amazin  how you can speak right to my heart";
+}
+
+
+var myForgetNewInstance= ForgetNew();
+console.log("the message of myForgetNewInstance is " + myForgetNewInstance.message);
